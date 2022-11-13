@@ -1,6 +1,6 @@
-import { TodoItem } from '../types/todo-item'
+import { createSlice, CreateSliceOptions } from '@reduxjs/toolkit'
 
-const defaultValue = {
+const initialState = {
   todos: [{
     id: Number(new Date()),
     text: 'Todo 1',
@@ -8,30 +8,30 @@ const defaultValue = {
   }],
 }
 
-export const todosReducer = (state: { todos: TodoItem[] } = defaultValue, action: { type: string, payload: TodoItem }) => {
-  switch (action.type) {
-  case 'ADD_TODO':
-    return {
+export const todosSlice = createSlice({
+  name: 'todo',
+  initialState,
+    reducers: {
+      addTodo: (state, action: { payload: string }) => ({
       ...state,
-      todos: [...state.todos, { text: action.payload.text, isSelected: false, id: Number(new Date()) }]
-    }
+        todos: [...state.todos, { text: action.payload, isSelected: false, id: Number(new Date()) }]
+      }),
 
-  case 'DEL_TODO':
-    return {
+      delTodo: (state, action: { payload: number }) => ({
       ...state,
-      todos: state.todos.filter(todo => todo.id !== action.payload.id)
-    }
+          todos: state.todos.filter(todo => todo.id !== action.payload)
+      }),
 
-  case 'CHOOSE_TODO':
-    return {
-      todos: state.todos.map(todo => todo.id === action.payload.id
-        ? { ...todo, isSelected: !todo.isSelected }
-        : todo
-      )
+      selectTodo: (state, action: { payload: number }) => ({
+        todos: state.todos.map(todo => todo.id === action.payload
+          ? { ...todo, isSelected: !todo.isSelected }
+          : todo
+        )
+      })
     }
-
-  default:
-    return state
   }
+)
 
-}
+export const { addTodo, selectTodo, delTodo } = todosSlice.actions
+
+export default todosSlice.reducer

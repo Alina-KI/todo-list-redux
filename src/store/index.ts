@@ -1,6 +1,12 @@
-import { createStore } from 'redux'
-import { todosReducer } from './todos'
+// import { createStore } from 'redux'
+import todosSlice from './todos'
+import { configureStore } from '@reduxjs/toolkit'
 
 
-// @ts-ignore
-export const store = createStore(todosReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+export const store = configureStore({
+  reducer: todosSlice
+})
+// createStore(todosReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
