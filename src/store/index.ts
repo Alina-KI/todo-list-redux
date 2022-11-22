@@ -1,12 +1,14 @@
-// import { createStore } from 'redux'
 import todosSlice from './todos'
 import { configureStore } from '@reduxjs/toolkit'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 
 export const store = configureStore({
   reducer: todosSlice
 })
-// createStore(todosReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+type RootState = ReturnType<typeof store.getState>
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+type AppDispatch = typeof store.dispatch
+export const useAppDispatch: () => AppDispatch = useDispatch
